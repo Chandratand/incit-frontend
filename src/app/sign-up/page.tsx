@@ -1,107 +1,32 @@
-'use client';
-
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { SignInValidator, SignUpValidator } from '@/lib/validator/auth';
-import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
 const SignUpPage = () => {
-  const form = useForm<z.infer<typeof SignUpValidator>>({
-    resolver: zodResolver(SignUpValidator),
-    defaultValues: {
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    },
-  });
-
-  function onSubmit(values: z.infer<typeof SignUpValidator>) {
-    console.log(values);
-  }
   return (
     <section className="container min-h-screen flex justify-center items-center py-4">
-      <Card className="mx-auto max-w-sm">
+      <Card className="mx-auto w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Sign Up</CardTitle>
-          <CardDescription>Enter your information to create an account</CardDescription>
+          <CardDescription>Choose your sign up method</CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-2">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Input Name" {...field} />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Input Email" {...field} />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="Input Password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="Input Password Confirmation" {...field} />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="space-y-2 mt-2">
-                <Button type="submit" className="w-full">
-                  Sign Up
-                </Button>
-                <Button variant="outline" className="w-full">
-                  Continue with Google
-                </Button>
-                <Button variant="outline" className="w-full">
-                  Continue with facebook
-                </Button>
-              </div>
-            </form>
-          </Form>
+          <div className="grid gap-2">
+            <Link href={'#'} className={buttonVariants()}>
+              Continue with Google
+            </Link>
+            <Link href={'#'} className={buttonVariants()}>
+              Continue with facebook
+            </Link>
+            <div className="relative flex items-center w-full my-2">
+              <div className="flex-grow border-t" />
+              <span className="flex-shrink mx-4 text-muted-foreground text-xs font-medium">or sign in with email</span>
+              <div className="flex-grow border-t" />
+            </div>
+            <Link href={'/sign-up/email'} className={buttonVariants({ variant: 'outline' })}>
+              Continue with Email
+            </Link>
+          </div>
           <div className="mt-4 text-center text-sm">
             Already have an account?{' '}
             <Link href="/sign-in" className="underline">

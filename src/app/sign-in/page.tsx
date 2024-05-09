@@ -24,12 +24,25 @@ const SignInPage = () => {
   }
   return (
     <section className="container min-h-screen flex justify-center items-center">
-      <Card className="mx-auto max-w-sm">
+      <Card className="mx-auto w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>Enter your email below to login to your account</CardDescription>
         </CardHeader>
         <CardContent>
+          <div className="flex gap-4">
+            <Button variant="outline" className="w-full">
+              Login with Google
+            </Button>
+            <Button variant="outline" className="w-full">
+              Login with facebook
+            </Button>
+          </div>
+          <div className="relative flex items-center w-full my-4">
+            <div className="flex-grow border-t" />
+            <span className="flex-shrink mx-4 text-muted-foreground text-xs font-medium">or sign in with email</span>
+            <div className="flex-grow border-t" />
+          </div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
               <FormField
@@ -63,12 +76,6 @@ const SignInPage = () => {
               <div className="space-y-2">
                 <Button type="submit" className="w-full">
                   Login
-                </Button>
-                <Button variant="outline" className="w-full">
-                  Login with Google
-                </Button>
-                <Button variant="outline" className="w-full">
-                  Login with facebook
                 </Button>
               </div>
             </form>
