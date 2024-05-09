@@ -17,6 +17,7 @@ import { z } from 'zod';
 const ResetPasswordPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof ResetPasswordValidator>>({
     resolver: zodResolver(ResetPasswordValidator),
     defaultValues: {
@@ -91,7 +92,7 @@ const ResetPasswordPage = () => {
                 )}
               />
               <div className="space-y-2">
-                <Button type="submit" isLoading={isLoading}>
+                <Button type="submit" className="w-full" isLoading={isLoading}>
                   Reset Password
                 </Button>
               </div>

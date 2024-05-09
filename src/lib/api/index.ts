@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import { getAuth } from '@/actions/auth';
 import axios from 'axios';
 
 const isServer = typeof window === 'undefined';
@@ -9,9 +10,11 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async (config) => {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6ImFzZGEiLCJlbWFpbCI6ImVtYWlsQGdtYWlsLmNvbSIsImlzVmVyaWZpZWQiOnRydWUsInNpZ25VcE1ldGhvZCI6bnVsbCwiaWF0IjoxNzE1MjU0MTg4LCJleHAiOjE3MTUyNTc3ODh9.OkBlxXB6opW2h9irjRoK7hhTVMtidD7C8AZVAwnE64g';
-    config.headers.Authorization = `Bearer ${token}`;
+    const auth = await getAuth();
+    if (auth?.token) {
+      const token = auth?.token;
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
     return config;
   },

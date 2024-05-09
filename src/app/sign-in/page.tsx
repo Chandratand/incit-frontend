@@ -1,16 +1,25 @@
 'use client';
 
+import { setAuth } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import api from '@/lib/api';
+import { errorHandler } from '@/lib/handler/errorHandler';
 import { SignInValidator } from '@/lib/validator/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 const SignInPage = () => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof SignInValidator>>({
     resolver: zodResolver(SignInValidator),
     defaultValues: {
@@ -19,9 +28,20 @@ const SignInPage = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof SignInValidator>) {
-    console.log(values);
-  }
+  const onSubmit = async (data: z.infer<typeof SignInValidator>) => {
+    try {
+      setIsLoading(true);
+      const res = await api.post('auth/sign-in', data);
+      setAuth(res.data.data);
+      toast.success('SignIn Success!');
+      router.replace('/dashboard');
+    } catch (error) {
+      errorHandler(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <section className="container min-h-screen flex justify-center items-center">
       <Card className="mx-auto w-full max-w-sm">
@@ -66,7 +86,7 @@ const SignInPage = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="Input Password" {...field} />
+                      <Input type="password" placeholder="Input Password" {...field} />
                     </FormControl>
 
                     <FormMessage />
@@ -74,7 +94,7 @@ const SignInPage = () => {
                 )}
               />
               <div className="space-y-2">
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" isLoading={isLoading}>
                   Login
                 </Button>
               </div>

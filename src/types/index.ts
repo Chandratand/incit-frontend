@@ -12,3 +12,16 @@ export interface UserStats {
   todaysActiveUsers?: number;
   avgActiveUsers?: number;
 }
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  isVerified: boolean;
+  signUpMethod: string | null;
+}
+
+export interface Auth {
+  token: string;
+  user: User;
+}
