@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
-import { getAuth } from '@/actions/auth';
 import axios from 'axios';
+import { getSession } from 'next-auth/react';
+import { getAuthSession } from '../auth';
 
 const isServer = typeof window === 'undefined';
 const api = axios.create({
@@ -10,10 +11,14 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async (config) => {
-    const auth = await getAuth();
-    if (auth?.token) {
-      const token = auth?.token;
-      config.headers.Authorization = `Bearer ${token}`;
+    let session;
+    if (isServer) {
+      session = await getAuthSession();
+    } else {
+      session = await getSession();
+    }
+    if (session) {
+      config.headers.Authorization = `Bearer ${session.user.token}`;
     }
 
     return config;

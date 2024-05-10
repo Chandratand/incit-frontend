@@ -5,16 +5,18 @@ import { Avatar, AvatarFallback } from '../ui/avatar';
 import { Button } from '../ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { User } from '@/types';
-import { signOut } from '@/actions/auth';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export function AccountDropdown({ user }: { user: User | null }) {
+  const router = useRouter();
   if (!user) return null;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="relative size-8 rounded-full">
           <Avatar className="size-8">
-            <AvatarFallback className="uppercase">JD</AvatarFallback>
+            <AvatarFallback className="uppercase">{user.name[0]}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -35,7 +37,13 @@ export function AccountDropdown({ user }: { user: User | null }) {
           </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-destructive" onSelect={async () => await signOut()}>
+        <DropdownMenuItem
+          className="text-destructive"
+          onSelect={async () => {
+            await signOut({ redirect: false });
+            router.replace('/');
+          }}
+        >
           Sign Out
         </DropdownMenuItem>
       </DropdownMenuContent>

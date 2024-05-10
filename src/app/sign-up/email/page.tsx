@@ -1,6 +1,5 @@
 'use client';
 
-import { setAuth } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -10,6 +9,7 @@ import { errorHandler } from '@/lib/handler/errorHandler';
 import { SignUpValidator } from '@/lib/validator/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronLeft } from 'lucide-react';
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -34,8 +34,14 @@ const SignUpEmailPage = () => {
   const onSubmit = async (data: z.infer<typeof SignUpValidator>) => {
     try {
       setIsLoading(true);
-      const res = await api.post('auth/sign-up', data);
-      setAuth(res.data.data);
+      await api.post('auth/sign-up', data);
+      const res = await signIn('credentials', { redirect: false, ...data });
+      if (res?.ok) {
+        toast.success('SignUp Success!');
+        router.replace('/resend-email');
+      } else {
+        toast.error('INVALID CREDENTIALS!');
+      }
       toast.success('Sign Up Success! Check your email!');
       form.reset();
     } catch (error) {

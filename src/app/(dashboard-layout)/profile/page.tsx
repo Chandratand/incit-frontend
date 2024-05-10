@@ -4,11 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import useAuth from '@/hooks/useAuth';
 import api from '@/lib/api';
 import { errorHandler } from '@/lib/handler/errorHandler';
 import { UpdateProfileValidator } from '@/lib/validator/profile';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -16,22 +16,22 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 const ProfilePage = () => {
-  const auth = useAuth();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof UpdateProfileValidator>>({
     resolver: zodResolver(UpdateProfileValidator),
     defaultValues: {
-      email: 'email@gmail.com',
+      email: '',
       name: '',
     },
   });
 
   useEffect(() => {
-    if (auth?.user) {
-      form.reset({ name: auth.user.name, email: auth.user.email });
+    if (session?.user) {
+      form.reset({ name: session?.user.name, email: session?.user.email });
     }
-  }, [auth, form]);
+  }, [session, form]);
 
   const onSubmit = async (data: z.infer<typeof UpdateProfileValidator>) => {
     try {
@@ -46,7 +46,7 @@ const ProfilePage = () => {
     }
   };
 
-  if (!auth) return null;
+  if (status === 'loading') return null;
 
   return (
     <section className="container min-h-[calc(100vh-60px)] flex justify-center items-center">

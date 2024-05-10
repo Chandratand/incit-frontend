@@ -2,9 +2,14 @@
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import api from '@/lib/api';
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const SignUpPage = () => {
+  const router = useRouter();
+
   return (
     <section className="container min-h-screen flex justify-center items-center py-4">
       <Card className="mx-auto w-full max-w-md">
@@ -14,12 +19,26 @@ const SignUpPage = () => {
         </CardHeader>
         <CardContent>
           <div className="grid gap-2">
-            <Link href={process.env.NEXT_PUBLIC_API_URL + 'auth/google'} className={buttonVariants()}>
+            <Button
+              variant="outline"
+              onClick={async () => {
+                await signIn('google', { redirect: false });
+                router.replace('/dashboard');
+              }}
+              className="w-full"
+            >
               Continue with Google
-            </Link>
-            <Link href={process.env.NEXT_PUBLIC_API_URL + 'auth/facebook'} className={buttonVariants()}>
+            </Button>
+            <Button
+              onClick={async () => {
+                await signIn('facebook', { redirect: false });
+                router.replace('/dashboard');
+              }}
+              variant="outline"
+              className="w-full"
+            >
               Continue with facebook
-            </Link>
+            </Button>
             <div className="relative flex items-center w-full my-2">
               <div className="flex-grow border-t" />
               <span className="flex-shrink mx-4 text-muted-foreground text-xs font-medium">or sign in with email</span>
