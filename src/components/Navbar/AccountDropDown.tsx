@@ -1,30 +1,30 @@
 'use client';
 
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { Button } from '../ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { User } from '@/types';
-import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 
-export function AccountDropdown({ user }: { user: User | null }) {
+export function AccountDropdown() {
   const router = useRouter();
-  if (!user) return null;
+  const { data: session, status } = useSession();
+  if (status === 'loading' || status === 'unauthenticated' || !session?.user) return null;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="relative size-8 rounded-full">
           <Avatar className="size-8">
-            <AvatarFallback className="uppercase">{user.name[0]}</AvatarFallback>
+            <AvatarFallback className="uppercase">{session.user.name[0]}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{user.name}</p>
-            <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+            <p className="text-sm font-medium leading-none">{session.user.name}</p>
+            <p className="text-xs leading-none text-muted-foreground">{session.user.email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

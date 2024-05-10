@@ -16,7 +16,7 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 const ProfilePage = () => {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof UpdateProfileValidator>>({
@@ -37,6 +37,7 @@ const ProfilePage = () => {
     try {
       setIsLoading(true);
       const res = await api.put('auth/profile', { name: data.name });
+      await update({ name: res.data.data.name });
       toast.success('Profile Updated!');
       router.push('/dashboard');
     } catch (error) {
