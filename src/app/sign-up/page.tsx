@@ -22,8 +22,7 @@ const SignUpPage = () => {
             <Button
               variant="outline"
               onClick={async () => {
-                await signIn('google', { redirect: false });
-                router.replace('/dashboard');
+                await signIn('google');
               }}
               className="w-full"
             >
@@ -31,8 +30,7 @@ const SignUpPage = () => {
             </Button>
             <Button
               onClick={async () => {
-                await signIn('facebook', { redirect: false });
-                router.replace('/dashboard');
+                await signIn('facebook');
               }}
               variant="outline"
               className="w-full"
