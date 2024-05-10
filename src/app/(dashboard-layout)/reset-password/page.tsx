@@ -31,7 +31,6 @@ const ResetPasswordPage = () => {
     try {
       setIsLoading(true);
       const res = await api.post('auth/reset-password', data);
-      console.log(res);
       toast.success('Reset Password Success!');
       router.push('/dashboard');
     } catch (error) {

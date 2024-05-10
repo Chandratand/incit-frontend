@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { format } from 'date-fns';
 
+export const dynamic = 'force-dynamic';
 const DashboardPage = async () => {
   const usersList = await fetchUsers();
   const userStats = await fetchUserStats();

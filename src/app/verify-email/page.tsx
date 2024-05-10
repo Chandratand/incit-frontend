@@ -4,9 +4,9 @@ import { errorHandler } from '@/lib/handler/errorHandler';
 import { CircleCheck, CircleX, Loader2 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 
-const VerifyEmailPage = () => {
+const VerifyEmail = () => {
   const searchParams = useSearchParams();
   const { data: session, update, status } = useSession();
   const [isLoading, setIsLoading] = useState(true);
@@ -66,6 +66,14 @@ const VerifyEmailPage = () => {
         </>
       )}
     </section>
+  );
+};
+
+const VerifyEmailPage = () => {
+  return (
+    <Suspense>
+      <VerifyEmail />
+    </Suspense>
   );
 };
 
