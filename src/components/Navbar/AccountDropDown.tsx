@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { Button } from '../ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import api from '@/lib/api';
 
 export function AccountDropdown() {
   const router = useRouter();
@@ -40,6 +41,9 @@ export function AccountDropdown() {
         <DropdownMenuItem
           className="text-destructive"
           onSelect={async () => {
+            try {
+              await api.post('auth/sign-out');
+            } catch (err) {}
             const res = await signOut({ redirect: false });
             router.replace('/');
           }}
