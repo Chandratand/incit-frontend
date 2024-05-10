@@ -36,6 +36,22 @@ npm install
 
 ```
 
+## Environment Variables
+
+To run this frontend project, you will need to add the following environment variables to your `.env.local` or `.env` file. You can start by copying the provided `.env.example` file to a new file named `.env.local` or `.env`, then filling in the necessary values.
+
+- `NEXT_PUBLIC_API_URL`: The URL of the backend API. This should be the base URL where your backend server is accessible.
+- `NEXTAUTH_URL`: The base URL of your site as it should appear when authenticating with next-auth.
+- `NEXTAUTH_SECRET`: A secret key used for session token and CSRF token generation in NextAuth.js. It should be a long, random, and secure string.
+- `GOOGLE_CLIENT_ID`: The client ID provided by Google that is used to enable Google authentication via NextAuth.js.
+- `GOOGLE_CLIENT_SECRET`: The client secret provided by Google that is used alongside the client ID for Google authentication.
+- `FACEBOOK_CLIENT_ID`: The client ID provided by Facebook for enabling Facebook authentication in your application.
+- `FACEBOOK_CLIENT_SECRET`: The client secret from Facebook used for authentication, paired with the Facebook Client ID.
+
+### Note:
+
+Ensure not to share your `.env.local` files or include them in your version-controlled source code as they contain sensitive information. The `.env.example` file is a safe template to share and commit, giving other developers a guide to set up their environment variables.
+
 # Getting Started
 
 First, run the development server:
