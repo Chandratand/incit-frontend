@@ -40,7 +40,7 @@ export function AccountDropdown({ user }: { user: User | null }) {
         <DropdownMenuItem
           className="text-destructive"
           onSelect={async () => {
-            await signOut({ redirect: false });
+            const res = await signOut({ redirect: false });
             router.replace('/');
           }}
         >
