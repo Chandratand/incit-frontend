@@ -1,13 +1,13 @@
 'use client';
 
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { errorHandler } from '@/lib/handler/errorHandler';
 import { SignInValidator } from '@/lib/validator/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
+import { getSession, signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -31,9 +31,15 @@ const SignInPage = () => {
     try {
       setIsLoading(true);
       const res = await signIn('credentials', { redirect: false, ...data });
+
       if (res?.ok) {
         toast.success('SignIn Success!');
-        router.replace('/dashboard');
+        const session = await getSession();
+        if (session?.user.isVerified) {
+          router.replace('/dashboard');
+        } else {
+          router.replace('/resend-email');
+        }
       } else {
         toast.error('INVALID CREDENTIALS!');
       }

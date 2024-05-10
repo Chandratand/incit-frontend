@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const auth = await getAuthSession();
-  if (!auth) redirect('/');
+  if (!auth) redirect('/sign-in');
   if (!auth.user.isVerified) redirect('/resend-email');
 
   return (

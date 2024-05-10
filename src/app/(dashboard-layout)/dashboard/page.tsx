@@ -1,4 +1,5 @@
 import { fetchUserStats, fetchUsers } from '@/actions/user';
+import StatsCard from '@/components/StatsCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { format } from 'date-fns';
@@ -52,16 +53,3 @@ const DashboardPage = async () => {
 };
 
 export default DashboardPage;
-
-const StatsCard = ({ title, value }: { title: string; value?: number }) => {
-  return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">{value || 0}</div>
-      </CardContent>
-    </Card>
-  );
-};

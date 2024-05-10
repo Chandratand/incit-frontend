@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 
 const HomePage = async () => {
   const session = await getAuthSession();
-  if (session?.user) redirect('/dashboard');
+  if (session?.user.isVerified) redirect('/dashboard');
 
   return (
     <section className="min-h-screen flex justify-center items-center gap-4">

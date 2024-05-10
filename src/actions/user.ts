@@ -11,13 +11,3 @@ export const fetchUserStats = async (): Promise<UserStats> => {
   const res = await api.get('users/stats');
   return res.data.data;
 };
-
-export const verifyEmail = async (token: string) => {
-  try {
-    const res = await api.post('users/verify-email?token=' + token);
-    if (res.data.data) return true;
-    return false;
-  } catch (error) {
-    return false;
-  }
-};
