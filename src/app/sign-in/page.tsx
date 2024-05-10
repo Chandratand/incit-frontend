@@ -1,14 +1,13 @@
 'use client';
 
-import { setAuth } from '@/actions/auth';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import api from '@/lib/api';
 import { errorHandler } from '@/lib/handler/errorHandler';
 import { SignInValidator } from '@/lib/validator/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -31,10 +30,13 @@ const SignInPage = () => {
   const onSubmit = async (data: z.infer<typeof SignInValidator>) => {
     try {
       setIsLoading(true);
-      const res = await api.post('auth/sign-in', data);
-      setAuth(res.data.data);
-      toast.success('SignIn Success!');
-      router.replace('/dashboard');
+      const res = await signIn('credentials', { redirect: false, ...data });
+      if (res?.ok) {
+        toast.success('SignIn Success!');
+        router.replace('/dashboard');
+      } else {
+        toast.error('INVALID CREDENTIALS!');
+      }
     } catch (error) {
       errorHandler(error);
     } finally {
@@ -51,12 +53,24 @@ const SignInPage = () => {
         </CardHeader>
         <CardContent>
           <div className="flex gap-4">
-            <Link href={process.env.NEXT_PUBLIC_API_URL + 'auth/google'} className={buttonVariants({ variant: 'outline', className: 'text-center w-full' })}>
-              Sign In with Google
-            </Link>
-            <Link href={process.env.NEXT_PUBLIC_API_URL + 'auth/facebook'} className={buttonVariants({ variant: 'outline', className: 'text-center w-full' })}>
-              Sign In with facebook
-            </Link>
+            <Button
+              variant="outline"
+              onClick={async () => {
+                await signIn('google');
+              }}
+              className="w-full"
+            >
+              Login with Google
+            </Button>
+            <Button
+              onClick={async () => {
+                await signIn('facebook');
+              }}
+              variant="outline"
+              className="w-full"
+            >
+              Login with facebook
+            </Button>
           </div>
           <div className="relative flex items-center w-full my-4">
             <div className="flex-grow border-t" />

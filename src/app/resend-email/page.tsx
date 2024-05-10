@@ -1,9 +1,9 @@
 'use client';
 
-import { getAuth, setAuth } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
 import api from '@/lib/api';
 import { errorHandler } from '@/lib/handler/errorHandler';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -11,24 +11,27 @@ import { toast } from 'sonner';
 const ResendEmailPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { data: session, update, status } = useSession();
 
   useEffect(() => {
-    const fetchAuth = async () => {
-      try {
-        const auth = await getAuth();
-        if (auth?.user.isVerified) router.replace('/dashboard');
-        const res = await api.get('auth/verification-status');
-        if (res.data.data.user.isVerified) {
-          await setAuth(res.data.data);
-          router.replace('/dashboard');
-        }
-      } catch (error) {
-        errorHandler(error);
-      }
-    };
+    if (session?.user.isVerified) {
+      router.replace('/dashboard');
+    }
+  }, [session, router]);
 
-    fetchAuth();
-  }, [router]);
+  const checkStatus = async () => {
+    try {
+      const res = await api.get('auth/verification-status');
+      if (res.data.data.user.isVerified) {
+        await update({ token: res.data.data.token, ...res.data.data.user });
+        toast.success('Email Verified!');
+      } else {
+        toast.success('Email is not Verified!');
+      }
+    } catch (error) {
+      errorHandler(error);
+    }
+  };
 
   const resend = async () => {
     try {
@@ -45,6 +48,9 @@ const ResendEmailPage = () => {
   return (
     <section className="min-h-screen flex flex-col justify-center items-center gap-4">
       <p className="text-lg text-center px-4">Please verify your email address to access the dashboard. Click the button below to resend the verification email.</p>
+      <Button onClick={checkStatus} variant={'outline'} isLoading={isLoading} disabled={status === 'loading'}>
+        Check Status Verification
+      </Button>
       <Button onClick={resend} isLoading={isLoading}>
         Resend Email Verification
       </Button>
