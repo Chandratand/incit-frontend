@@ -20,7 +20,6 @@ const SignUpPage = () => {
         <CardContent>
           <div className="grid gap-2">
             <Button
-              variant="outline"
               onClick={async () => {
                 await signIn('google');
               }}
@@ -32,7 +31,6 @@ const SignUpPage = () => {
               onClick={async () => {
                 await signIn('facebook');
               }}
-              variant="outline"
               className="w-full"
             >
               Continue with facebook

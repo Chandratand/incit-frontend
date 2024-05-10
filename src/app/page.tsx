@@ -1,7 +1,12 @@
 import { buttonVariants } from '@/components/ui/button';
+import { getAuthSession } from '@/lib/auth';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-const HomePage = () => {
+const HomePage = async () => {
+  const session = await getAuthSession();
+  if (session?.user) redirect('/dashboard');
+
   return (
     <section className="min-h-screen flex justify-center items-center gap-4">
       <Link href={'/sign-in'} className={buttonVariants()}>
