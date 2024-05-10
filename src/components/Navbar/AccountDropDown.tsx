@@ -7,7 +7,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { User } from '@/types';
 import { signOut } from '@/actions/auth';
 
-export function AccountDropdown({ user }: { user: User }) {
+export function AccountDropdown({ user }: { user: User | null }) {
+  if (!user) return null;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

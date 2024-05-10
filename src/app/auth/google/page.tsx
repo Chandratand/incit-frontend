@@ -3,10 +3,10 @@ import { setAuth } from '@/actions/auth';
 import api from '@/lib/api';
 import { errorHandler } from '@/lib/handler/errorHandler';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 
-const GoogleCallbackPage = () => {
+const GoogleCallback = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const hasRun = useRef(false);
@@ -17,7 +17,7 @@ const GoogleCallbackPage = () => {
         hasRun.current = true;
         try {
           const res = await api.get(`auth/google/callback?code=${code}`);
-          setAuth(res.data.data);
+          await setAuth(res.data.data);
           toast.success('SignIn Success!');
           router.replace('/dashboard');
         } catch (error) {
@@ -35,5 +35,13 @@ const GoogleCallbackPage = () => {
 
   return null;
 };
+
+function GoogleCallbackPage() {
+  return (
+    <Suspense>
+      <GoogleCallback />
+    </Suspense>
+  );
+}
 
 export default GoogleCallbackPage;

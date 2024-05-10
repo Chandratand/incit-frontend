@@ -3,10 +3,10 @@ import { setAuth } from '@/actions/auth';
 import api from '@/lib/api';
 import { errorHandler } from '@/lib/handler/errorHandler';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 
-const FacebookCallbackPage = () => {
+const FBCallback = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const hasRun = useRef(false);
@@ -17,7 +17,7 @@ const FacebookCallbackPage = () => {
         hasRun.current = true;
         try {
           const res = await api.get(`auth/facebook/callback?code=${code}`);
-          setAuth(res.data.data);
+          await setAuth(res.data.data);
           toast.success('SignIn Success!');
           router.replace('/dashboard');
         } catch (error) {
@@ -33,7 +33,15 @@ const FacebookCallbackPage = () => {
     handleCallback(code);
   }, [searchParams, router]);
 
-  return null;
+  return <p>Checking</p>;
 };
+
+function FacebookCallbackPage() {
+  return (
+    <Suspense>
+      <FBCallback />
+    </Suspense>
+  );
+}
 
 export default FacebookCallbackPage;

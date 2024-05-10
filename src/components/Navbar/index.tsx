@@ -5,7 +5,7 @@ const Navbar = async () => {
   const auth = await getAuth();
   return (
     <nav className="w-full border-b bg-background p-3 flex justify-end">
-      <AccountDropdown user={auth.user} />
+      <AccountDropdown user={auth?.user || null} />
     </nav>
   );
 };
