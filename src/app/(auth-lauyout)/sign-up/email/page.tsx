@@ -38,12 +38,11 @@ const SignUpEmailPage = () => {
       const res = await signIn('credentials', { redirect: false, ...data });
       if (res?.ok) {
         toast.success('SignUp Success!');
+        form.reset();
         router.replace('/resend-email');
       } else {
-        toast.error('INVALID CREDENTIALS!');
+        toast.error('Signup Success but sign in fail!');
       }
-      toast.success('Sign Up Success! Check your email!');
-      form.reset();
     } catch (error) {
       errorHandler(error);
     } finally {

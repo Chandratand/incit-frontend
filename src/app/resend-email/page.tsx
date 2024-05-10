@@ -26,7 +26,7 @@ const ResendEmailPage = () => {
         await update({ token: res.data.data.token, ...res.data.data.user });
         toast.success('Email Verified!');
       } else {
-        toast.success('Email is not Verified!');
+        toast.error('Email is not Verified!');
       }
     } catch (error) {
       errorHandler(error);
