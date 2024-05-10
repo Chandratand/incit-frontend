@@ -1,7 +1,7 @@
 'use client';
 
 import { setAuth } from '@/actions/auth';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -44,19 +44,19 @@ const SignInPage = () => {
 
   return (
     <section className="container min-h-screen flex justify-center items-center">
-      <Card className="mx-auto w-full max-w-sm">
+      <Card className="mx-auto w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>Enter your email below to login to your account</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex gap-4">
-            <Button variant="outline" className="w-full">
-              Login with Google
-            </Button>
-            <Button variant="outline" className="w-full">
-              Login with facebook
-            </Button>
+            <Link href={process.env.NEXT_PUBLIC_API_URL + 'auth/google'} className={buttonVariants({ variant: 'outline', className: 'text-center w-full' })}>
+              Sign In with Google
+            </Link>
+            <Link href={process.env.NEXT_PUBLIC_API_URL + 'auth/facebook'} className={buttonVariants({ variant: 'outline', className: 'text-center w-full' })}>
+              Sign In with facebook
+            </Link>
           </div>
           <div className="relative flex items-center w-full my-4">
             <div className="flex-grow border-t" />

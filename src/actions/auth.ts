@@ -1,7 +1,7 @@
 'use server';
 
-import { Auth, User } from '@/types';
-import { setCookie, getCookie, deleteCookie } from 'cookies-next';
+import { Auth } from '@/types';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -10,7 +10,7 @@ export async function setAuth({ token, user }: Auth) {
   const authDataString = JSON.stringify(authData);
   const encodedData = Buffer.from(authDataString).toString('base64');
 
-  setCookie('authData', encodedData, { cookies, httpOnly: true, maxAge: 3600 }); // Expires in 10 minutes
+  setCookie('authData', encodedData, { cookies, httpOnly: true, maxAge: 3600 });
   return true;
 }
 

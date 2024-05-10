@@ -1,21 +1,23 @@
-import { buttonVariants } from '@/components/ui/button';
+'use client';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import api from '@/lib/api';
 import Link from 'next/link';
 
 const SignUpPage = () => {
   return (
     <section className="container min-h-screen flex justify-center items-center py-4">
-      <Card className="mx-auto w-full max-w-sm">
+      <Card className="mx-auto w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Sign Up</CardTitle>
           <CardDescription>Choose your sign up method</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-2">
-            <Link href={'#'} className={buttonVariants()}>
+            <Link href={process.env.NEXT_PUBLIC_API_URL + 'auth/google'} className={buttonVariants()}>
               Continue with Google
             </Link>
-            <Link href={'#'} className={buttonVariants()}>
+            <Link href={process.env.NEXT_PUBLIC_API_URL + 'auth/facebook'} className={buttonVariants()}>
               Continue with facebook
             </Link>
             <div className="relative flex items-center w-full my-2">
