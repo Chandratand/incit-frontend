@@ -2,7 +2,7 @@
 
 #### Description
 
-INCIT frontend is a simple API designed to manage user interactions for the INCIT application. It supports operations such as user authentication, profile management, and statistics gathering.
+INCIT frontend is a simple website designed to manage user interactions. It supports operations such as user authentication, profile management, and statistics gathering.
 
 Demo URL : https://incit-frontend-five.vercel.app/
 
@@ -16,7 +16,7 @@ To set up the INCIT Frontend locally, follow these steps:
 
 ```bash
 
-	git clone https://github.com/Chandratand/incit-frontend
+git clone https://github.com/Chandratand/incit-frontend
 
 ```
 
@@ -24,7 +24,7 @@ To set up the INCIT Frontend locally, follow these steps:
 
 ```bash
 
-	cd incit-frontend
+cd incit-frontend
 
 ```
 
@@ -32,7 +32,7 @@ To set up the INCIT Frontend locally, follow these steps:
 
 ```bash
 
-	npm install
+npm install
 
 ```
 
@@ -42,13 +42,13 @@ First, run the development server:
 
 ```bash
 
-	npm  run  dev
-	# or
-	yarn  dev
-	# or
-	pnpm  dev
-	# or
-	bun  dev
+npm  run  dev
+# or
+yarn  dev
+# or
+pnpm  dev
+# or
+bun  dev
 
 ```
 
