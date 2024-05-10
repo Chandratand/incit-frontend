@@ -1,10 +1,28 @@
-import { Button } from '@/components/ui/button';
+import { verifyEmail } from '@/actions/user';
+import { CircleCheck, CircleX } from 'lucide-react';
+import { redirect } from 'next/navigation';
 
-const VerifyEmailPage = () => {
+const VerifyEmailPage = async ({ searchParams }: { searchParams: { token: string } }) => {
+  const { token } = searchParams;
+  if (!token) redirect('/');
+
+  const res = await verifyEmail(token);
+
   return (
-    <section className="min-h-screen flex flex-col justify-center items-center gap-4">
-      <p className="text-lg text-center px-4">Please verify your email address to access the dashboard. Click the button below to resend the verification email.</p>
-      <Button>Resend Email Verification</Button>
+    <section>
+      <section className="flex flex-col justify-center items-center min-h-screen text-xl font-semibold text-primary gap-4">
+        {res ? (
+          <>
+            <CircleCheck size={60} />
+            <p>Email verification successful. You can now log in to your account.</p>
+          </>
+        ) : (
+          <>
+            <CircleX size={60} className="text-destructive" />
+            <p className="text-destructive">Verification Fail</p>
+          </>
+        )}
+      </section>
     </section>
   );
 };

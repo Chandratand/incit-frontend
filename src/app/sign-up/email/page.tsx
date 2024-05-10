@@ -36,8 +36,8 @@ const SignUpEmailPage = () => {
       setIsLoading(true);
       const res = await api.post('auth/sign-up', data);
       setAuth(res.data.data);
-      toast.success('Sign Up Success!');
-      router.replace('/verify-email');
+      toast.success('Sign Up Success! Check your email!');
+      form.reset();
     } catch (error) {
       errorHandler(error);
     } finally {
